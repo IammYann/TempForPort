@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>John Doe - Portfolio</title>
+    <title>Aryan Kumar - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="logo">John Doe</div>
+            <div class="logo">✨ Aryan Kumar</div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link">Home</a></li>
                 <li><a href="#about" class="nav-link">About</a></li>
@@ -23,18 +26,24 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-background"></div>
         <div class="hero-content">
-            <h1 class="hero-title">Hi, I'm John Doe</h1>
-            <p class="hero-subtitle">Full Stack Developer | UI/UX Designer</p>
-            <p class="hero-description">I create beautiful and functional digital experiences</p>
-            <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">View My Work</button>
+            <div class="hero-emoji">👨‍💻</div>
+            <h1 class="hero-title">Hi, I'm Aryan Kumar</h1>
+            <p class="hero-subtitle">Full Stack Developer | Creative Designer</p>
+            <p class="hero-description">Building exceptional digital products with modern technologies</p>
+            <div class="hero-buttons">
+                <button class="cta-button" onclick="document.getElementById('projects').scrollIntoView({behavior: 'smooth'})">Explore My Work</button>
+                <button class="cta-button-secondary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Get In Touch</button>
+            </div>
         </div>
+        <div class="hero-scroll">↓</div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
-            <h2 class="section-title">About Me</h2>
+            <h2 class="section-title"><span class="title-icon">👋</span>About Me</h2>
             <div class="about-content">
                 <div class="about-text">
                     <p>I'm a passionate developer with 5+ years of experience building web applications. I love creating user-friendly interfaces and solving complex problems with clean code.</p>
@@ -61,7 +70,7 @@
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <div class="container">
-            <h2 class="section-title">Featured Projects</h2>
+            <h2 class="section-title"><span class="title-icon">🚀</span>Featured Projects</h2>
             <div class="projects-grid">
                 <div class="project-card">
                     <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
@@ -153,7 +162,7 @@
     <!-- Skills Section -->
     <section id="skills" class="skills">
         <div class="container">
-            <h2 class="section-title">Skills & Technologies</h2>
+            <h2 class="section-title"><span class="title-icon">⚡</span>Skills & Technologies</h2>
             <div class="skills-grid">
                 <div class="skill-category">
                     <h3>Frontend</h3>
@@ -197,7 +206,7 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Get In Touch</h2>
+            <h2 class="section-title"><span class="title-icon">💬</span>Get In Touch</h2>
             <p class="contact-subtitle">Feel free to reach out for collaborations or just a friendly hello!</p>
             
             <form class="contact-form" id="contactForm">
