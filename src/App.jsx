@@ -131,7 +131,7 @@ function Hero() {
   const y2 = useTransform(scrollY, [0, 500], [0, -150])
   const opacity = useTransform(scrollY, [0, 400], [1, 0])
 
-  const typewriterWords = ['full-stack apps', 'beautiful UIs', 'clean code', 'digital experiences']
+  const typewriterWords = ['full-stack apps', 'beautiful UIs', 'clean code', 'digital experiences','many many more...']
 
   return (
     <section id="home" className="hero">
@@ -164,8 +164,8 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
         >
-          <span className="name-first">Aryan</span>
-          <span className="name-last">Man Singh Pradhan</span>
+          <span className="name-first">Aryan Man Singh Pradhan</span>
+          <span className="name-last"></span>
         </motion.h1>
 
         <motion.div
@@ -209,8 +209,8 @@ function Hero() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          <CounterStat value={50} label="Projects Completed" delay={1.1} />
-          <CounterStat value={30} label="Happy Clients" delay={1.2} />
+          <CounterStat value={11} label="Projects Completed" delay={1.1} />
+          <CounterStat value={1} label="Happy Clients" delay={1.2} />
           <CounterStat value={5} label="Years Experience" delay={1.3} />
         </motion.div>
       </motion.div>
@@ -296,7 +296,7 @@ function About() {
           >
             <div className="image-wrapper">
               <div className="image-placeholder">
-                <span className="placeholder-emoji">👨‍💻</span>
+                <img src="/assets/Me/aryan.jpg" alt="Aryan" />
               </div>
               <motion.div
                 className="image-frame"
@@ -671,7 +671,7 @@ function Contact() {
             <div className="contact-details">
               <div className="contact-item">
                 <span className="contact-icon">📧</span>
-                <a href="mailto:hello@aryan.dev">hello@aryan.dev</a>
+                <a href="mailto:aryan4433650@gmail.com">aryan4433650@gmail.com</a>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📍</span>
