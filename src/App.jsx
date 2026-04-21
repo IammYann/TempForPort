@@ -64,7 +64,7 @@ function Typewriter({ words }) {
 }
 
 // Navigation component
-function Navbar() {
+function Navbar({ mode, setMode, transitionOrigin, setTransitionOrigin }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -82,6 +82,17 @@ function Navbar() {
     { href: '#contact', label: 'Contact' },
   ]
 
+  const isVideo = mode === 'video'
+
+  const handleModeToggle = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    setTransitionOrigin({
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2
+    })
+    setMode(isVideo ? 'coding' : 'video')
+  }
+
   return (
     <motion.nav
       initial={{ y: -100 }}
@@ -91,9 +102,9 @@ function Navbar() {
     >
       <div className="nav-container">
         <a href="#home" className="logo">
-          <span className="logo-bracket">&lt;</span>
-          <span className="logo-text">aryan</span>
-          <span className="logo-bracket">/&gt;</span>
+          <span className="logo-bracket">{isVideo ? '[' : '&lt;'}</span>
+          <span className="logo-text">{isVideo ? 'ARYAN' : 'aryan'}</span>
+          <span className="logo-bracket">{isVideo ? ']' : '/&gt;'}</span>
         </a>
 
         <ul className={`nav-menu ${mobileOpen ? 'active' : ''}`}>
@@ -110,15 +121,26 @@ function Navbar() {
           ))}
         </ul>
 
-        <button
-          className={`nav-toggle ${mobileOpen ? 'active' : ''}`}
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle navigation"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className="nav-actions">
+          <button
+            className="mode-toggle"
+            onClick={handleModeToggle}
+            title={isVideo ? 'Switch to Coding Mode' : 'Switch to Video Editing Mode'}
+          >
+            <span className="mode-icon">{isVideo ? '💻' : '🎬'}</span>
+            <span className="mode-label">{isVideo ? 'Code' : 'Video'}</span>
+          </button>
+
+          <button
+            className={`nav-toggle ${mobileOpen ? 'active' : ''}`}
+            onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label="Toggle navigation"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
     </motion.nav>
   )
@@ -806,19 +828,360 @@ function ScrollToTop() {
   )
 }
 
+// Video Editing Portfolio Components
+function VideoEditorHero() {
+  const { scrollY } = useScroll()
+  const y1 = useTransform(scrollY, [0, 500], [0, 200])
+  const opacity = useTransform(scrollY, [0, 400], [1, 0])
+
+  return (
+    <section id="home" className="hero">
+      <motion.div className="hero-background" style={{ y: y1 }}>
+        <div className="gradient-orb orb-1" />
+        <div className="gradient-orb orb-2" />
+      </motion.div>
+
+      <motion.div
+        className="hero-content"
+        style={{ opacity }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+      >
+        <motion.div
+          className="hero-greeting"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <span className="greeting-text">Welcome to my</span>
+        </motion.div>
+
+        <motion.h1
+          className="hero-name"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          <span className="name-first">Video Editing</span>
+          <span className="name-last">Showcase</span>
+        </motion.h1>
+
+        <motion.div
+          className="hero-title-wrapper"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
+        >
+          <span className="title-prefix">I create </span>
+          <Typewriter words={['cinematic videos', 'visual stories', 'motion graphics', 'brand films']} />
+        </motion.div>
+
+        <motion.p
+          className="hero-description"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          Crafting compelling visual narratives through expert editing, color grading, and motion graphics.
+          Specializing in music videos, commercials, and brand content.
+        </motion.p>
+
+        <motion.div
+          className="hero-cta"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.9 }}
+        >
+          <a href="#videos" className="btn btn-primary">
+            <span>Watch My Work</span>
+            <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#contact" className="btn btn-secondary">Get In Touch</a>
+        </motion.div>
+      </motion.div>
+
+      <motion.a
+        href="#about"
+        className="scroll-indicator"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        transition={{ duration: 1, delay: 1.5 }}
+      >
+        <span>Scroll to explore</span>
+        <div className="scroll-arrow" />
+      </motion.a>
+    </section>
+  )
+}
+
+function VideoProjects() {
+  const videos = [
+    {
+      title: 'Music Video Production',
+      description: 'Dynamic music video with dynamic cuts, transitions, and visual effects.',
+      duration: '3:45',
+      category: 'Music Video',
+    },
+    {
+      title: 'Commercial Spot',
+      description: 'High-energy commercial for a tech startup with motion graphics.',
+      duration: '0:30',
+      category: 'Commercial',
+    },
+    {
+      title: 'Documentary Edit',
+      description: 'Emotional documentary with seamless scene transitions and color grading.',
+      duration: '12:30',
+      category: 'Documentary',
+    },
+    {
+      title: 'Brand Story',
+      description: 'Brand narrative video with motion graphics and kinetic typography.',
+      duration: '2:15',
+      category: 'Brand',
+    },
+  ]
+
+  return (
+    <section id="videos" className="section projects">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="section-tag">01.</span>
+          <h2 className="section-title">Video Projects</h2>
+          <div className="title-line" />
+        </motion.div>
+
+        <div className="projects-grid">
+          {videos.map((video, index) => (
+            <motion.article
+              key={video.title}
+              className="project-card featured"
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ y: -8 }}
+            >
+              <div className="project-image">
+                <div className="image-overlay" />
+                <div className={`project-thumbnail gradient-${(index % 4) + 1}`}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <div className="play-button">▶</div>
+                </div>
+              </div>
+              <div className="project-content">
+                <div className="project-header">
+                  <h3 className="project-title">{video.title}</h3>
+                  <span className="video-duration">{video.duration}</span>
+                </div>
+                <p className="project-description">{video.description}</p>
+                <ul className="project-tech">
+                  <li>{video.category}</li>
+                </ul>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function VideoSkills() {
+  const skillGroups = [
+    {
+      icon: '🎬',
+      title: 'Editing Software',
+      skills: ['Adobe Premiere Pro', 'DaVinci Resolve', 'Final Cut Pro', 'After Effects'],
+    },
+    {
+      icon: '🎨',
+      title: 'Motion Graphics',
+      skills: ['After Effects', 'Mocha', 'Element 3D', 'Trapcode'],
+    },
+    {
+      icon: '🛠️',
+      title: 'Other Skills',
+      skills: ['Color Grading', 'Sound Design', 'VFX', 'Kinetic Typography'],
+    },
+  ]
+
+  return (
+    <section id="skills" className="section skills">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="section-tag">02.</span>
+          <h2 className="section-title">Tools & Skills</h2>
+          <div className="title-line" />
+        </motion.div>
+
+        <div className="skills-content">
+          <motion.div
+            className="skills-main"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {skillGroups.map((group, index) => (
+              <motion.div
+                key={group.title}
+                className="skill-group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+              >
+                <h3 className="skill-group-title">
+                  <span className="skill-icon">{group.icon}</span>
+                  {group.title}
+                </h3>
+                <div className="skill-items">
+                  {group.skills.map((skill, i) => (
+                    <motion.span
+                      key={skill}
+                      className="skill-badge"
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.3, delay: 0.05 * i }}
+                      whileHover={{ scale: 1.05, y: -2 }}
+                    >
+                      {skill}
+                    </motion.span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Secret toggle button component
+function SecretToggle({ mode, setMode }) {
+  const [isVisible, setIsVisible] = useState(false)
+  const [hoverCount, setHoverCount] = useState(0)
+
+  const handleClick = () => {
+    setMode(mode === 'coding' ? 'video' : 'coding')
+  }
+
+  return (
+    <motion.button
+      className="secret-toggle"
+      onClick={handleClick}
+      onMouseEnter={() => setHoverCount(h => h + 1)}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: isVisible ? 1 : 0, scale: isVisible ? 1 : 0 }}
+      onHover={() => setIsVisible(true)}
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.95 }}
+      title={`Switch to ${mode === 'coding' ? 'Video Editing' : 'Coding'} Mode`}
+    >
+      <span className="secret-icon">{mode === 'coding' ? '🎬' : '💻'}</span>
+    </motion.button>
+  )
+}
+
+// Transition Overlay Component
+function TransitionOverlay({ isVisible, origin, direction }) {
+  return (
+    <AnimatePresence>
+      {isVisible && origin && (
+        <motion.div
+          className={`transition-overlay ${direction === 'toVideo' ? 'to-video' : 'to-code'}`}
+          initial={{ clipPath: `circle(0% at ${origin.x}px ${origin.y}px)` }}
+          animate={{ clipPath: `circle(200vh at ${origin.x}px ${origin.y}px)` }}
+          exit={{ clipPath: `circle(0% at ${origin.x}px ${origin.y}px)` }}
+          transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+        />
+      )}
+    </AnimatePresence>
+  )
+}
+
 // Main App component
 function App() {
   useLenis()
+  const [mode, setMode] = useState('coding')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [transitionOrigin, setTransitionOrigin] = useState(null)
+  const [transitionDirection, setTransitionDirection] = useState(null)
+
+  useEffect(() => {
+    if (mode === 'video') {
+      document.body.classList.add('video-mode')
+    } else {
+      document.body.classList.remove('video-mode')
+    }
+  }, [mode])
+
+  const handleModeSwitch = (newMode) => {
+    if (newMode === mode || !transitionOrigin) return
+    setTransitionDirection(newMode === 'video' ? 'toVideo' : 'toCode')
+    setIsTransitioning(true)
+    setTimeout(() => {
+      setMode(newMode)
+      setIsTransitioning(false)
+      setTransitionDirection(null)
+    }, 250)
+  }
 
   return (
     <>
-      <Navbar />
+      <TransitionOverlay isVisible={isTransitioning} origin={transitionOrigin} direction={transitionDirection} />
+      <Navbar mode={mode} setMode={handleModeSwitch} transitionOrigin={transitionOrigin} setTransitionOrigin={setTransitionOrigin} />
       <main>
-        <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Contact />
+        <AnimatePresence mode="wait">
+          {mode === 'coding' ? (
+            <motion.div 
+              key="coding"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              <Hero />
+              <About />
+              <Projects />
+              <Skills />
+              <Contact />
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="video"
+              initial={{ opacity: 0, scale: 1.01 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.99 }}
+              transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+            >
+              <VideoEditorHero />
+              <VideoProjects />
+              <VideoSkills />
+              <Contact />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       <Footer />
       <ScrollToTop />
