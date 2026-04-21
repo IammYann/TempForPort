@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
-import Lenis from '@studio-freight/lenis'
+import Lenis from 'lenis'
 import './App.css'
 
 // Custom hook for Lenis smooth scroll
