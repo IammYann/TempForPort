@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Lenis from 'lenis'
 import './App.css'
@@ -782,6 +782,304 @@ function Contact() {
   )
 }
 
+// Particle Background
+function ParticleBackground() {
+  const canvasRef = useState(null)
+
+  useEffect(() => {
+    const canvas = document.createElement('canvas')
+    canvas.className = 'particle-canvas'
+    document.body.appendChild(canvas)
+    const ctx = canvas.getContext('2d')
+    
+    let particles = []
+    let animationId
+    
+    const resize = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    
+    const createParticles = () => {
+      particles = []
+      const count = Math.floor((canvas.width * canvas.height) / 15000)
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 2 + 1,
+          alpha: Math.random() * 0.5 + 0.2
+        })
+      }
+    }
+    
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      
+      particles.forEach(p => {
+        p.x += p.vx
+        p.y += p.vy
+        
+        if (p.x < 0) p.x = canvas.width
+        if (p.x > canvas.width) p.x = 0
+        if (p.y < 0) p.y = canvas.height
+        if (p.y > canvas.height) p.y = 0
+        
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(139, 92, 246, ${p.alpha})`
+        ctx.fill()
+        
+        particles.forEach(p2 => {
+          const dx = p.x - p2.x
+          const dy = p.y - p2.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < 100) {
+            ctx.beginPath()
+            ctx.moveTo(p.x, p.y)
+            ctx.lineTo(p2.x, p2.y)
+            ctx.strokeStyle = `rgba(139, 92, 246, ${0.1 * (1 - dist / 100)})`
+            ctx.stroke()
+          }
+        })
+      })
+      
+      animationId = requestAnimationFrame(animate)
+    }
+    
+    resize()
+    createParticles()
+    animate()
+    
+    window.addEventListener('resize', () => {
+      resize()
+      createParticles()
+    })
+    
+    return () => {
+      cancelAnimationFrame(animationId)
+      canvas.remove()
+    }
+  }, [])
+
+  return null
+}
+
+// Sidebar Scroll Indicators
+function SidebarIndicators() {
+  const [activeSection, setActiveSection] = useState('home')
+  
+  useEffect(() => {
+    const sections = ['home', 'about', 'projects', 'skills', 'contact']
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id)
+          }
+        })
+      },
+      { threshold: 0.3 }
+    )
+    
+    sections.forEach(id => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    
+    return () => observer.disconnect()
+  }, [])
+
+  const dots = [
+    { id: 'home', label: 'Home' },
+    { id: 'about', label: 'About' },
+    { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'contact', label: 'Contact' },
+  ]
+
+  return (
+    <motion.div 
+      className="sidebar-indicators"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 1 }}
+    >
+      {dots.map((dot) => (
+        <a
+          key={dot.id}
+          href={`#${dot.id}`}
+          className={`sidebar-dot ${activeSection === dot.id ? 'active' : ''}`}
+          title={dot.label}
+        >
+          <span className="sidebar-tooltip">{dot.label}</span>
+        </a>
+      ))}
+    </motion.div>
+  )
+}
+
+// Testimonials Section
+function Testimonials() {
+  return (
+    <section id="testimonials" className="section testimonials">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="section-tag">05.</span>
+          <h2 className="section-title">What People Say</h2>
+          <div className="title-line" />
+        </motion.div>
+
+        <div className="testimonials-grid">
+          <motion.div
+            className="testimonial-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <div className="testimonial-content">
+              <p>"Working with Aryan transformed our online presence. His attention to detail and ability to bring our vision to life exceeded all expectations."</p>
+            </div>
+            <div className="testimonial-author">
+              <div className="author-avatar">SK</div>
+              <div className="author-info">
+                <span className="author-name">Sarah Kim</span>
+                <span className="author-role">CEO, TechStart</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="testimonial-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            <div className="testimonial-content">
+              <p>"Delivered our project ahead of schedule with flawless execution. The best developer we've worked with."</p>
+            </div>
+            <div className="testimonial-author">
+              <div className="author-avatar">MJ</div>
+              <div className="author-info">
+                <span className="author-name">Mike Johnson</span>
+                <span className="author-role">Founder, DesignCo</span>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            className="testimonial-card"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <div className="testimonial-content">
+              <p>"Incredible creativity combined with solid technical skills. Our new website has increased conversions by 40%."</p>
+            </div>
+            <div className="testimonial-author">
+              <div className="author-avatar">AL</div>
+              <div className="author-info">
+                <span className="author-name">Anna Lee</span>
+                <span className="author-role">Marketing Director, GrowthLabs</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Blog/Articles Section
+function Blog() {
+  const articles = [
+    {
+      title: 'Building Performant React Applications in 2024',
+      excerpt: 'Exploring the latest patterns and best practices for creating lightning-fast React apps.',
+      date: 'Mar 15, 2024',
+      readTime: '8 min read',
+      category: 'React'
+    },
+    {
+      title: 'The Art of Smooth Animations',
+      excerpt: 'How to create buttery-smooth animations that delight users without sacrificing performance.',
+      date: 'Feb 28, 2024',
+      readTime: '6 min read',
+      category: 'Animation'
+    },
+    {
+      title: 'Modern CSS Techniques You Should Know',
+      excerpt: 'Level up your CSS game with these powerful modern techniques and properties.',
+      date: 'Jan 20, 2024',
+      readTime: '5 min read',
+      category: 'CSS'
+    },
+  ]
+
+  return (
+    <section id="blog" className="section blog">
+      <div className="container">
+        <motion.div
+          className="section-header"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="section-tag">06.</span>
+          <h2 className="section-title">Latest Articles</h2>
+          <div className="title-line" />
+        </motion.div>
+
+        <div className="blog-grid">
+          {articles.map((article, index) => (
+            <motion.article
+              key={article.title}
+              className="blog-card"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              whileHover={{ y: -5 }}
+            >
+              <div className="blog-category">{article.category}</div>
+              <h3 className="blog-title">{article.title}</h3>
+              <p className="blog-excerpt">{article.excerpt}</p>
+              <div className="blog-meta">
+                <span>{article.date}</span>
+                <span>•</span>
+                <span>{article.readTime}</span>
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        <motion.div
+          className="blog-cta"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <a href="#" className="btn btn-outline">View All Articles</a>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
+
 // Footer component
 function Footer() {
   return (
@@ -1150,7 +1448,9 @@ function App() {
   return (
     <>
       <TransitionOverlay isVisible={isTransitioning} origin={transitionOrigin} direction={transitionDirection} />
+      <ParticleBackground />
       <Navbar mode={mode} setMode={handleModeSwitch} transitionOrigin={transitionOrigin} setTransitionOrigin={setTransitionOrigin} />
+      <SidebarIndicators />
       <main>
         <AnimatePresence mode="wait">
           {mode === 'coding' ? (
@@ -1165,6 +1465,8 @@ function App() {
               <About />
               <Projects />
               <Skills />
+              <Testimonials />
+              <Blog />
               <Contact />
             </motion.div>
           ) : (
