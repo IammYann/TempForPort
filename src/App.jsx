@@ -6,6 +6,16 @@ import './App.css'
 // Custom hook for Lenis smooth scroll
 function useLenis() {
   useEffect(() => {
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Check if touch device (simple detection)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+
+    // Disable Lenis on mobile/touch devices or if user prefers reduced motion
+    if (prefersReducedMotion || isTouchDevice) {
+      return
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1000 * Math.pow(2, -10 * t)),
