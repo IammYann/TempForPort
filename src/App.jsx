@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+﻿import { useState, useEffect, useRef } from 'react'
 import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion'
 import Lenis from 'lenis'
 import './App.css'
@@ -349,7 +349,7 @@ function About() {
               building web applications that make a difference.
             </p>
             <p>
-              My journey in tech started with curiosity about how websites work,
+              My journey in tech started with curiosity about how website work,
               and has evolved into a career creating scalable, user-friendly applications.
               I thrive on solving complex problems and turning ideas into reality through code.
             </p>
