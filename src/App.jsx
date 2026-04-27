@@ -303,6 +303,10 @@ function CounterStat({ value, label, delay }) {
 
 // About section component
 function About() {
+  const { scrollY } = useScroll()
+  const imageY = useTransform(scrollY, [0, 1000], [100, -100])
+  const imageRotate = useTransform(scrollY, [0, 1000], [0, 2])
+  
   return (
     <section id="about" className="section about">
       <div className="container">
@@ -320,13 +324,14 @@ function About() {
 
         <div className="about-content">
           <motion.div
-            className="about-image"
+            className="about-image parallax-layer"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ y: imageY, rotate: imageRotate }}
           >
-            <div className="image-wrapper">
+            <div className="image-wrapper parallax-container">
               <div className="image-placeholder">
                 <img src="/assets/Me/aryan.jpg" alt="Aryan" />
               </div>
@@ -373,6 +378,7 @@ function About() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
+                  whileHover={{ x: 8, scale: 1.02 }}
                 >
                   <span className="highlight-icon">{['🎯', '🚀', '💡', '🤝'][i]}</span>
                   <span>{item}</span>
@@ -401,6 +407,9 @@ function About() {
 
 // Project card component
 function ProjectCard({ project, index, isFeatured }) {
+  const { scrollY } = useScroll()
+  const cardY = useTransform(scrollY, [1500, 2500], [100, -100])
+  
   return (
     <motion.article
       className={`project-card ${isFeatured ? 'featured' : ''}`}
@@ -409,6 +418,7 @@ function ProjectCard({ project, index, isFeatured }) {
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       whileHover={{ y: -8 }}
+      style={{ y: isFeatured ? cardY : 0 }}
     >
       <div className="project-image">
         <div className="image-overlay" />
