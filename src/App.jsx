@@ -380,7 +380,7 @@ function About() {
                   transition={{ duration: 0.4, delay: 0.5 + i * 0.1 }}
                   whileHover={{ x: 8, scale: 1.02 }}
                 >
-                  <span className="highlight-icon">{['🎯', '🚀', '💡', '🤝'][i]}</span>
+                  <span className="highlight-icon">{['-', '-', '-', '-'][i]}</span>
                   <span>{item}</span>
                 </motion.div>
               ))}
